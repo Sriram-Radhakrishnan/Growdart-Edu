@@ -2,6 +2,18 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+## Callback email setup
+
+The callback form posts to `/api/callback`. A server-side Nodemailer transport sends all form details to `hi@growdart.com`, with the learner's email as the Reply-To address.
+
+Copy `.env.example` to `.env.local` and set `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, and `SMTP_FROM` using your email provider's SMTP settings. `SMTP_FROM` must be authorized by that provider. Use port 587 for STARTTLS or 465 for implicit TLS. Restart the development server after configuring credentials. Add the same server-only variables to your deployment environment.
+
+Never commit `.env.local` or expose credentials with a `NEXT_PUBLIC_` prefix. Without SMTP credentials, the form displays an unavailable message rather than claiming the request was sent. Success means the provider accepted the message; inbox delivery depends on the provider.
+
+Run `node --test tests/callback.test.mjs` to verify validation, email composition, and failure handling without sending real email.
+
+## Run locally
+
 First, run the development server:
 
 ```bash
