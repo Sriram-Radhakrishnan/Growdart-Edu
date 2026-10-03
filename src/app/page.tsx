@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
+import { SiteHeader } from "@/components/site-header";
 import { useState } from "react";
-import { ArrowUpRight, ArrowRight, Sparkles, Menu, X, ChevronDown, Check, Code2, BrainCircuit, TrendingUp } from "lucide-react";
+import { ArrowUpRight, ArrowRight, Sparkles, Check, Code2, BrainCircuit, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Programs } from "@/components/programs";
@@ -12,7 +11,7 @@ import { FaqAndBanner, Footer } from "@/components/faq-and-footer";
 
 import { CallbackForm } from "@/components/callback-form";
 
-const links = ["Why Grow Dart", "Programs", "How Grow Dart Works", "FAQs"];
+
 const features = [
   { icon: Code2, label: "Go deeper", text: "Build strong technical foundations." },
   { icon: BrainCircuit, label: "Think with AI", text: "Make AI part of your everyday work." },
@@ -26,45 +25,34 @@ const differentiators = [
 ];
 
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [callbackCategory, setCallbackCategory] = useState("cohort");
   const [callbackCourse, setCallbackCourse] = useState("");
   const [panel, setPanel] = useState<string | null>(null);
-  const openPanel = (name: string) => { setCallbackCourse(""); setCallbackCategory("cohort"); setPanel(name); setMenuOpen(false); };
+  const openPanel = (name: string) => { setCallbackCourse(""); setCallbackCategory("cohort"); setPanel(name); };
   const showPrograms = () => {
     document.getElementById("programs")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
-    setMenuOpen(false);
+   
   };
   const navigate = (name: string) => {
     if (name === "FAQs") {
       document.getElementById("faqs")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
-      setMenuOpen(false);
+     
       return;
     }
     if (name === "How Grow Dart Works") {
       document.getElementById("how-grow-dart-works")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
-      setMenuOpen(false);
+     
       return;
     }
     if (name === "Programs") { showPrograms(); return; }
     if (name === "Why Grow Dart") {
       document.getElementById("why-grow-dart")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
-      setMenuOpen(false);
+     
     } else openPanel(name);
   };
   return (
     <div className="min-h-screen bg-background">
-      <header className="relative z-20 mx-auto flex h-24 max-w-[1280px] items-center justify-between gap-8 px-6 sm:px-10 lg:px-14">
-        <Link href="/" aria-label="Grow Dart home" className="shrink-0 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-emerald-700">
-          <Image src="/logo/light-png.png" alt="Grow Dart" width={946} height={147} className="h-auto w-[168px] sm:w-[190px]" priority />
-        </Link>
-        <nav aria-label="Main navigation" className="hidden items-center gap-8 lg:flex">
-          {links.map((link) => <button key={link} onClick={() => navigate(link)} className="nav-link flex items-center gap-1.5 text-[13px] font-medium text-[#446255]">{link}{link === "Programs" && <ChevronDown size={13} />}</button>)}
-        </nav>
-        <Button onClick={() => openPanel("Let’s talk")} className="hidden h-10 rounded-full bg-[#0a5533] px-5 text-[13px] text-white hover:bg-[#11784a] lg:inline-flex">Let’s talk <ArrowUpRight size={15} className="ml-2" /></Button>
-        <Button variant="ghost" size="icon" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls="mobile-menu" onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden">{menuOpen ? <X /> : <Menu />}</Button>
-        {menuOpen && <nav id="mobile-menu" aria-label="Mobile navigation" className="absolute top-20 right-6 left-6 flex flex-col gap-1 rounded-2xl border bg-white p-4 shadow-xl lg:hidden">{links.map((link) => <button key={link} onClick={() => navigate(link)} className="rounded-lg px-4 py-3 text-left text-sm hover:bg-emerald-50">{link}</button>)}<Button className="mt-2" onClick={() => openPanel("Let’s talk")}>Let’s talk <ArrowUpRight /></Button></nav>}
-      </header>
+      <SiteHeader onEnquire={() => openPanel("Let’s talk")} onNavigate={navigate} />
       <main>
         <section aria-labelledby="hero-heading" className="hero relative isolate overflow-hidden px-6 pt-14 pb-12 text-center sm:pt-20 sm:pb-14">
           <div aria-hidden="true" className="hero-glow absolute inset-0 -z-20" />

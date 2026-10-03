@@ -5,7 +5,7 @@ import ts from 'typescript';
 
 const source = fs.readFileSync('src/app/api/callback/route.ts', 'utf8');
 const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, esModuleInterop: true } }).outputText;
-const courses = ['AI-Native Product Engineer', 'Data & AI Powered Analyst', 'AI Product Designer & Builder'];
+const courses = ['Product & AI Software Engineering', 'Data & AI Powered Analyst', 'AI Product Designer & Builder'];
 const valid = { name: 'Test learner', email: 'learner@example.com', phone: '+919876543210', course: courses[0], qualification: 'UG', description: 'Learning product engineering' };
 
 function load(sendMail) {
@@ -58,4 +58,13 @@ test('organization enquiries require a description without course or qualificati
     assert.ok(!message.text.includes('Course:'));
     assert.equal((await post(request({ ...body, description: ' ' }))).status, 400);
   }
+});
+test('brochure requests accept the three contact fields and a valid course', async () => {
+  let message;
+  const { post } = load(async mail => { message = mail; return { accepted: ['hi@growdart.com'] }; });
+  const body = { name: valid.name, email: valid.email, phone: valid.phone, course: courses[0], intent: 'brochure' };
+  assert.equal((await post(request(body))).status, 200);
+  assert.ok(message.subject.includes('brochure request'));
+  assert.ok(!message.text.includes('Qualification:'));
+  assert.equal((await post(request({ ...body, course: 'Other' }))).status, 400);
 });

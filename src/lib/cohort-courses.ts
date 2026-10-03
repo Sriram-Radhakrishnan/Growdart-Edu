@@ -1,1 +1,1 @@
-export const cohortCourses = ["AI-Native Product Engineer", "Data & AI Powered Analyst", "AI Product Designer & Builder"];
+export const cohortCourses = ["Product & AI Software Engineering", "Data & AI Powered Analyst", "AI Product Designer & Builder"];

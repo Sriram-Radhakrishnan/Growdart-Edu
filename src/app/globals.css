@@ -2,6 +2,40 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+.project-showcase { position:relative; isolation:isolate; overflow:hidden; border:1px solid #25734f; border-radius:20px; background:radial-gradient(ellipse at 85% 0%,#14824e 0%,transparent 58%),linear-gradient(145deg,#075c3c 0%,#043c2a 46%,#021c16 100%); }
+.project-mockup { position:relative; height:310px; overflow:hidden; perspective:900px; }
+.project-mockup::after { content:""; position:absolute; inset:auto 0 0; height:65px; background:linear-gradient(transparent,#043c2a); pointer-events:none; }
+.project-mockup-dots { position:absolute; top:24px; left:24px; width:96px; height:75px; opacity:.45; background-image:radial-gradient(#67f5a6 1.4px,transparent 1.4px); background-size:16px 16px; }
+.project-laptop { position:absolute; width:88%; right:-4%; top:82px; transform:rotate(-7deg) rotateY(-13deg); transform-origin:center; }
+.project-laptop-screen { position:relative; aspect-ratio:16/10; overflow:hidden; border:7px solid #111b19; border-top-width:10px; border-radius:12px 12px 3px 3px; background:#f5f8fa; box-shadow:0 0 0 1px #8caaa0,0 20px 35px #00120c80; }
+.project-laptop-base { position:relative; height:12px; margin:0 -6%; border-radius:2px 2px 50% 50%; background:linear-gradient(#78958a,#263c32 45%,#101e18); box-shadow:0 15px 22px #00120c80; }
+.project-laptop-base::before { content:""; display:block; width:20%; height:4px; margin:auto; border-radius:0 0 5px 5px; background:#172a20; }
+.project-phone { position:absolute; left:20px; top:123px; width:105px; height:184px; padding:5px; border:1px solid #9ab4a9; border-radius:20px; background:#101a16; transform:rotate(-7deg); box-shadow:8px 14px 26px #00120ca6; }
+.project-phone-screen { position:relative; width:100%; height:100%; overflow:hidden; border-radius:15px; background:#f5f8fa; }
+.project-phone-notch { position:absolute; top:8px; left:33%; width:34%; height:9px; border-radius:10px; background:#101a16; }
+@media (max-width:380px) { .project-mockup { height:275px; } .project-laptop { top:72px; } .project-phone { left:14px; top:106px; width:90px; height:160px; } }
+
+.roadmap-timeline::before { content:""; position:absolute; top:24px; bottom:24px; left:23px; width:1px; background:#b9d9b2; }
+.roadmap-row { position:relative; display:grid; grid-template-columns:48px minmax(0,1fr); gap:16px; align-items:start; margin-bottom:32px; }
+.roadmap-row:last-child { margin-bottom:0; }
+.roadmap-marker { grid-column:1; grid-row:1; }
+.roadmap-card { grid-column:2; grid-row:1; min-width:0; transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+.reveal-ready .roadmap-row:not(.is-revealed) .roadmap-card { opacity:0; transform:translateY(28px); }
+@media (min-width:1024px) {
+  .roadmap-timeline::before { left:50%; }
+  .roadmap-row { grid-template-columns:minmax(0,1fr) 48px minmax(0,1fr); gap:28px; margin-bottom:40px; }
+  .roadmap-marker { grid-column:2; }
+  .roadmap-left .roadmap-card { grid-column:1; }
+  .roadmap-right .roadmap-card { grid-column:3; }
+  .roadmap-card::after { content:""; position:absolute; top:24px; width:28px; height:1px; background:#b9d9b2; }
+  .roadmap-left .roadmap-card::after { right:-28px; }
+  .roadmap-right .roadmap-card::after { left:-28px; }
+  .roadmap-card { position:relative; }
+  .reveal-ready .roadmap-left:not(.is-revealed) .roadmap-card { transform:translateX(-36px); }
+  .reveal-ready .roadmap-right:not(.is-revealed) .roadmap-card { transform:translateX(36px); }
+}
+@media (prefers-reduced-motion:reduce) { .roadmap-card { transition:none; } .reveal-ready .roadmap-row:not(.is-revealed) .roadmap-card { opacity:1; transform:none; } }
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

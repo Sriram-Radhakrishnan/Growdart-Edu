@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ArrowUpRight, Download, ChevronRight, Users, GraduationCap, Building2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -10,7 +11,7 @@ type Category = { id: string; label: string; subtitle: string; audience: string;
 const internshipNote = "Eligible learners will have the opportunity to undertake a 3-month internship after completing the course.";
 const categories: Category[] = [
   { id: "cohort", label: "Cohort Programs", subtitle: "Build your next chapter", audience: "For individual learners", icon: Users, programs: [
-    { name: "AI-Native Product Engineer", tag: "BUILD FROM IDEA TO PRODUCTION", summary: "Learn the complete product engineering journey—from shaping an idea and designing the experience to building, testing, and deploying production-ready applications with AI in your workflow.", skills: [["Design to development", "Turn product requirements and designs into functional applications using modern development practices."], ["AI-assisted engineering", "Use AI throughout the development lifecycle to plan, write, debug, improve, and document your code."], ["Test, ship & iterate", "Learn testing, deployment, monitoring, and iteration to take products from development to real-world use."]] },
+    { name: "Product & AI Software Engineering", tag: "BUILD FROM IDEA TO PRODUCTION", summary: "Learn the complete product engineering journey—from shaping an idea and designing the experience to building, testing, and deploying production-ready applications with AI in your workflow.", skills: [["Design to development", "Turn product requirements and designs into functional applications using modern development practices."], ["AI-assisted engineering", "Use AI throughout the development lifecycle to plan, write, debug, improve, and document your code."], ["Test, ship & iterate", "Learn testing, deployment, monitoring, and iteration to take products from development to real-world use."]] },
     { name: "Data & AI Powered Analyst", tag: "TURN DATA INTO DECISIONS", summary: "Learn the complete analytics lifecycle—from understanding stakeholder questions and working with raw data to uncovering insights and building decision-ready dashboards, with AI at every stage.", skills: [["Questions to data", "Translate stakeholder needs into clear analytical questions, identify data requirements, and collect the right information."], ["Clean, analyze & uncover insights", "Prepare and explore data while using AI to accelerate cleaning, analysis, querying, and insight discovery."], ["Data to dashboards", "Build compelling Tableau dashboards and communicate insights that help stakeholders make informed decisions."]] },
     { name: "AI Product Designer & Builder", heading: "AI Product Designer", tag: "DESIGN. BUILD. BRING IDEAS TO LIFE.", summary: "Go beyond designing screens. Learn the complete product design process—from understanding users and shaping ideas to testing experiences and building live products with AI and no-code tools.", skills: [["Empathize, define & explore", "Understand users, uncover real problems, map journeys, and turn insights into meaningful product opportunities."], ["Design & validate with AI", "Move from concepts to interfaces and prototypes, using AI to explore ideas faster while keeping users at the center."], ["From prototype to live product", "Test your ideas and turn designs into working products using tools such as Figma Make, Lovable, and modern AI-powered builders."]] },
   ]},
@@ -35,15 +36,15 @@ function ProgramPanel({ category, onEnquire }: { category: Category; onEnquire: 
     const url = URL.createObjectURL(new Blob([text], {type: "text/markdown;charset=utf-8"}));
     const anchor = document.createElement("a"); anchor.href = url; anchor.download = `grow-dart-${program.name.toLowerCase().replace(/[^a-z0-9]+/g,"-")}-syllabus.md`; anchor.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
-  return <div className="grid min-h-full items-stretch gap-4 lg:h-full lg:min-h-0 lg:grid-cols-[260px_1fr] lg:gap-6">
-    <aside className="rounded-none border border-[#d7e6d4] bg-[#fbfffa] p-2 lg:overflow-y-auto">
+  return <div className="grid items-stretch gap-4 lg:grid-cols-[260px_1fr] lg:gap-6">
+    <aside className="rounded-none border border-[#d7e6d4] bg-[#fbfffa] p-2">
       <p className="px-4 pt-4 pb-3 text-[10px] font-semibold tracking-[.16em] text-[#6e8d79]">EXPLORE YOUR PATH</p>
       <div className="flex flex-col gap-1" role="group" aria-label={`${category.label} offerings`}>
         {category.programs.map((item, i) => <button key={item.name} aria-pressed={selected === i} aria-controls={`${category.id}-details`} onClick={() => setSelected(i)} className={`flex min-h-16 items-center justify-between gap-3 rounded-none border px-4 py-4 text-left text-[13px] leading-5 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 ${selected === i ? "border-[#cee4c9] bg-[#e8f4e6] font-semibold text-[#225b41]" : "border-transparent text-[#6a8273] hover:bg-[#f1f8f0]"}`}>{item.name}<ChevronRight size={15} className={`shrink-0 ${selected === i ? "opacity-100" : "opacity-30"}`} /></button>)}
       </div>
       {category.id === "corporate" && <p className="mx-4 mt-5 mb-4 border-t border-[#ddeadb] pt-4 text-xs leading-6 text-[#6e8d79]">Training shaped around your team, technology stack, and goals.</p>}
     </aside>
-    <article id={`${category.id}-details`} aria-labelledby={`${category.id}-title`} className="relative flex flex-col overflow-x-hidden rounded-none bg-[#115235] p-5 text-white sm:p-6 lg:min-h-0 lg:overflow-y-auto">
+    <article id={`${category.id}-details`} aria-labelledby={`${category.id}-title`} className="relative flex flex-col overflow-x-hidden rounded-none bg-[#115235] p-5 text-white sm:p-6">
       <div aria-hidden="true" className="pointer-events-none absolute -top-40 -right-40 size-96 border-[50px] border-[#4c8d64]/10" />
       <div className="relative shrink-0 border-b border-white/15 pb-4">
         <p className="text-[9px] font-medium tracking-[.16em] text-[#9bd4b0] sm:text-[10px]">{program.tag}</p>
@@ -54,21 +55,22 @@ function ProgramPanel({ category, onEnquire }: { category: Category; onEnquire: 
       <div className="relative shrink-0 py-4"><h4 className="mb-3 text-[10px] font-medium tracking-[.16em] text-[#9bd4b0]">WHAT YOU’LL BUILD</h4><ol className="space-y-3">{program.skills.map(([title, body], i) => <li key={title} className="flex gap-3.5 text-[13px] leading-6"><span className="font-heading font-semibold text-[#7fc298]">0{i+1}</span><p><strong className="font-semibold text-[#ecf6ea]">{title}</strong><span className="text-[#c0d0bd]"> — {body}</span></p></li>)}</ol></div>
       {program.outcome && <div className="relative mt-auto shrink-0 rounded-none border border-white/10 bg-[#ffffff08] p-4"><div className="mb-2 flex items-center gap-2 text-[9px] tracking-[.15em] text-[#9bd4b0]"><Sparkles size={13} /> WHERE THIS CAN TAKE YOU</div><p className="max-w-[580px] text-[13px] leading-6 text-[#deeadc]">{program.outcome}</p></div>}
       {category.id === "cohort" && <div className="relative shrink-0 border border-white/15 bg-white/5 p-4"><h4 className="mb-2 text-[10px] font-medium tracking-[.16em] text-[#9bd4b0]">INTERNSHIP OPPORTUNITIES</h4><p className="text-[13px] leading-6 text-[#deeadc]">{internshipNote}</p></div>}
+      {program.name === "Product & AI Software Engineering" && <Link href="/courses/product-ai-software-engineering" className="relative mt-4 inline-flex min-h-14 shrink-0 items-center justify-center gap-3 border border-[#8af0ae] bg-[#74efaa] px-6 text-sm font-bold text-[#073c29] shadow-lg shadow-black/15 transition-colors hover:bg-[#a0f5bf] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a0f5bf]">View Course <ArrowUpRight size={20} aria-hidden="true" /></Link>}
       <div className={`relative mt-4 grid shrink-0 gap-3 ${category.id === "cohort" ? "sm:grid-cols-2" : ""}`}><Button onClick={() => onEnquire(category.id === "cohort" ? program.name : undefined, category.id)} className="h-11 gap-3 rounded-none bg-[#d4efce] text-xs text-[#1f4f39] hover:bg-white">{category.id === "cohort" ? "Request a callback" : "Discuss your requirements"}<ArrowUpRight size={15} /></Button>{category.id === "cohort" && <Button variant="outline" onClick={download} className="h-11 gap-3 rounded-none border-white/25 bg-transparent text-xs text-white hover:bg-white/10 hover:text-white"><Download size={15} /> Download Syllabus</Button>}</div>
     </article>
   </div>;
 }
 
 export function Programs({ onEnquire }: { onEnquire: (course?: string, category?: string) => void }) {
-  return <section id="programs" aria-labelledby="programs-heading" className="h-[100vh] h-[100svh] overflow-hidden bg-[#fbfffa] px-6 py-8 sm:px-10 lg:px-14 lg:py-10"><div className="mx-auto flex h-full max-w-[1168px] flex-col">
+  return <section id="programs" aria-labelledby="programs-heading" className="bg-[#fbfffa] px-6 py-8 sm:px-10 lg:px-14 lg:py-10"><div className="mx-auto flex max-w-[1168px] flex-col">
     <p className="mb-2 flex shrink-0 items-center gap-2 text-[11px] font-semibold tracking-[.2em] text-[#46855d]"><span className="size-1.5 rounded-full bg-[#42a365]" /> OUR PROGRAMS</p>
     <h2 id="programs-heading" className="font-heading text-[clamp(2rem,3.4vw,3rem)] leading-[1.18] font-semibold tracking-[-.045em]">Your next step.<br className="sm:hidden" /> <span className="accent-text">Your space to grow.</span></h2>
     <p className="mt-3 max-w-[740px] shrink-0 text-[13px] leading-6 text-[#5f7668]">For your next career move, your campus, or your team. Find a learning path built around what you want to achieve.</p>
-    <Tabs defaultValue="cohort" className="mt-6 min-h-0 flex-1 gap-5">
+    <Tabs defaultValue="cohort" className="mt-6 gap-5">
       <TabsList aria-label="Program categories" className="grid w-full shrink-0 grid-cols-3 rounded-none border border-[#dbe8d9] bg-[#ebf4e9] p-1.5 group-data-horizontal/tabs:h-auto sm:p-2">
         {categories.map(({id,label,subtitle,icon: Icon}) => <TabsTrigger key={id} value={id} className="h-full flex-col gap-2 rounded-none px-2 py-3 whitespace-normal text-center text-[11px] leading-5 data-active:bg-[#fbfffa] data-active:shadow-sm sm:flex-row sm:gap-3 sm:px-4 sm:py-3 sm:text-sm"><Icon className="hidden sm:block" size={19}/><span>{label}<span className="mt-1 hidden text-[10px] font-normal text-[#6e8d79] sm:block">{subtitle}</span></span></TabsTrigger>)}
       </TabsList>
-      {categories.map(category => <TabsContent key={category.id} value={category.id} className="min-h-0 overflow-y-auto overscroll-contain lg:overflow-hidden"><ProgramPanel category={category} onEnquire={onEnquire}/></TabsContent>)}
+      {categories.map(category => <TabsContent key={category.id} value={category.id} className=""><ProgramPanel category={category} onEnquire={onEnquire}/></TabsContent>)}
     </Tabs>
   </div></section>;
 }
